@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: osint-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: osint
+  template:
+    metadata:
+      labels:
+        app: osint
+    spec:
+      containers:
+      - name: osint-container
+        image: your_osint_image:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
