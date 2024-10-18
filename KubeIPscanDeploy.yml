@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ip-scanning-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ip-scanner
+  template:
+    metadata:
+      labels:
+        app: ip-scanner
+    spec:
+      containers:
+      - name: ip-scanner-container
+        image: your_ip_scanning_image:latest
+        command: ["python", "shodan_scan.py"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ip-scanning-service
+spec:
+  selector:
+    app: ip-scanner
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
+  type: LoadBalancer
