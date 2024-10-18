@@ -1,7 +1,6 @@
 # G.E-P.O.C.S.O.C
 
 Myth-buster
----
 
 1. Setup and Automation Script (Install Dependencies)
 
@@ -143,7 +142,6 @@ if ip_lat and ip_lon:
     print(f"Distance to target: {distance:.2f} km")
 ```
 
----
 
 5. Automation with Ansible Playbook
 
@@ -151,7 +149,6 @@ This Ansible playbook automates the installation and configuration of the requir
 
 osint-playbook.yml
 
----
 ```Ansible
 - hosts: osint_nodes
   become: yes
@@ -186,7 +183,7 @@ osint-playbook.yml
         requirements: /opt/osint-platform/requirements.txt
 ```
 
----
+
 
 6. Kubernetes Deployment for Distributed Scanning
 
@@ -227,7 +224,7 @@ spec:
   type: LoadBalancer
 ```
 
----
+
 
 7. Setting Up Recurring Jobs (Cron)
 
@@ -242,13 +239,7 @@ Example Cron Jobs:
 */30 * * * * /path/to/nmap_scan.sh
 ```
 
----
 
-
-You're right, I forgot to include the social media checkers that are essential for tracking recurring activity across social media platforms. Below are the steps and scripts to incorporate social media tracking into the system.
-
-
----
 
 9. Social Media Checkers
 
@@ -261,8 +252,9 @@ theHarvester is a tool that can gather information such as emails, names, and so
 Command to use theHarvester:
 
 # theHarvester example command for LinkedIn and Twitter
+```
 theHarvester -d targetdomain.com -b linkedin,twitter
-
+```
 You can also automate this using a script:
 
 social_media_harvest.sh
@@ -393,7 +385,7 @@ Example Cron Job:
 You can also integrate the social media checkers into your Kubernetes deployment as a separate container that performs social media monitoring:
 
 social-media-checker-deployment.yml:
-
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -425,7 +417,7 @@ spec:
       port: 8081
       targetPort: 80
   type: LoadBalancer
-
+```
 
 ---
 
@@ -566,7 +558,7 @@ Step 1: Advanced Nmap Scan with Scripts
 
 The following Nmap command scans for devices with specific services (e.g., HTTP, SSH) and checks for known vulnerabilities:
 
-```
+```nmap
 nmap -sV --script=vuln --script-args=unsafe=1 <target_ip_range> -oN nmap_scan_results.txt
 ```
 
@@ -668,15 +660,15 @@ This will allow you to build custom transforms and include them in your automate
 ExifTool extracts metadata from images and other media files, which often includes GPS data, camera settings, timestamps, and more.
 
 Step 1: Install ExifTool
-
+```
 sudo apt-get install exiftool
-
+```
 Step 2: Extract Metadata from Images
 
 Run the following command to extract all metadata from an image:
-
+```
 exiftool image.jpg
-
+```
 To automate metadata extraction and integrate it into your OSINT platform, here’s a Python script that calls ExifTool and processes the output:
 
 ```python
