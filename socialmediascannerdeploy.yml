@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: social-media-checker-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: social-media-checker
+  template:
+    metadata:
+      labels:
+        app: social-media-checker
+    spec:
+      containers:
+      - name: social-media-checker-container
+        image: your_social_media_checker_image
+        command: ["python", "twitter_monitor.py"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: social-media-checker-service
+spec:
+  selector:
+    app: social-media-checker
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 80
+  type: LoadBalancer
