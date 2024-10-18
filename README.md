@@ -296,9 +296,9 @@ You can use Telegram's API to monitor public channels and look for recurring mes
 2. Use the Telethon Python library to interact with Telegram.
 
 
-```
-telegram_monitor.py
 
+telegram_monitor.py
+```
 from telethon.sync import TelegramClient
 
 # Replace these with your Telegram API credentials
@@ -924,8 +924,9 @@ Replace <IP_address_or_hostname> with your OSINT platform’s IP or hostname and
 You can use scp (secure copy protocol) to transfer files between your smartphone and the OSINT platform.
 
 # Copy a file from your local machine to the OSINT platform
+```
 scp -P <port_number> local_file_path username@<IP_address_or_hostname>:remote_directory
-
+```
 
 
 3. Using SSH Tunneling for Enhanced Security
@@ -1123,6 +1124,6 @@ Each of these approaches can make your C&C infrastructure more resilient, harder
 
 Conclusion
 
-In summary, the proposed OSINT platform can effectively replicate many of the functionalities of a Security Operations Center, focusing on lateral movement detection, geolocation tracking, social media monitoring, and vulnerability scanning of web-connected devices. With proper automation, data management, and visualization, this platform can serve as a robust tool for security monitoring and intelligence gathering, mimicking the effects of Gods Eye from the fast amd the furious movie.
+In summary, the proposed OSINT platform can effectively replicate many of the functionalities of a Security Operations Center, focusing on lateral movement detection, geolocation tracking, social media monitoring, and vulnerability scanning of web-connected devices. With proper automation, data management, and visualization, this platform can serve as a robust tool for security monitoring and intelligence gathering, mimicking the effects of Gods Eye from the fast and the furious movie.
 
 
