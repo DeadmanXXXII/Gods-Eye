@@ -1,0 +1,8 @@
+opencv-python
+numpy
+shodan
+geopy
+requests
+tweepy
+telethon
+selenium
