@@ -1,0 +1,32 @@
+---
+- hosts: osint_nodes
+  become: yes
+  tasks:
+
+    - name: Update apt cache
+      apt: 
+        update_cache: yes
+
+    - name: Install required packages
+      apt:
+        name: ['nmap', 'exiftool', 'python3-pip', 'git']
+        state: present
+
+    - name: Install Python dependencies
+      pip:
+        name:
+          - shodan
+          - opencv-python
+          - numpy
+          - geopy
+          - requests
+          - selenium
+
+    - name: Clone OSINT platform repository
+      git:
+        repo: 'https://github.com/your-osint-platform.git'
+        dest: /opt/osint-platform
+
+    - name: Install platform dependencies
+      pip:
+        requirements: /opt/osint-platform/requirements.txt
