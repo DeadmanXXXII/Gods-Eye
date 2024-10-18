@@ -1,6 +1,8 @@
 # G.E-P.O.C.S.O.C
 
 Myth-buster
+Incomplete but all pieces are here.
+It will be fully finished on Nov 5th.
 
 1. Setup and Automation Script (Install Dependencies)
 
