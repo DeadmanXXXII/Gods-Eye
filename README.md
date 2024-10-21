@@ -1126,4 +1126,204 @@ Conclusion
 
 In summary, the proposed OSINT platform can effectively replicate many of the functionalities of a Security Operations Center, focusing on lateral movement detection, geolocation tracking, social media monitoring, and vulnerability scanning of web-connected devices. With proper automation, data management, and visualization, this platform can serve as a robust tool for security monitoring and intelligence gathering, mimicking the effects of Gods Eye from the fast and the furious movie.
 
+Ok, so now the myth is busted let's talk real tools to make this stuff happen and the kind and of commands to make this happen and the clues that lead to you.
+
+
+1. Physical Markers: Highlight how even without famous landmarks, seemingly mundane objects such as manhole covers, lampposts, and serial numbers on street signs or utility markers can be used to pinpoint locations. These can be cross-referenced with public databases from local municipalities.
+
+
+2. Reflection Analysis: Explain how reflections in windows, car mirrors, or metallic objects can provide subtle visual clues about surroundings, revealing more information about the location or background.
+
+
+3. License Plates: Emphasize the importance of license plates not just for identifying vehicles but for extracting metadata related to geographic regions, jurisdictions, or recent activities.
+
+
+4. Open-Source Video Feeds: Discuss the use of open-source camera feeds (e.g., traffic or security cameras) where these markers are often visible, enabling OSINT operations to locate individuals based on indirect visual cues.
+
+
+5. AI and Object Detection: Include how machine learning models like YOLO can detect objects such as specific cars, types of infrastructure, or patterns in clothing, aiding in real-time tracking when traditional landmarks are absent.
+
+
+Yes, using Shodan in the context of tracking individuals through images is a viable approach when devices connected to the web are involved. For instance:
+
+1. Cameras and IoT Devices: If a person uploads a photo or video captured by a publicly exposed device like an IP camera, doorbell camera, or any internet-connected camera, Shodan can help identify these devices if they are unsecured and exposed to the web. By locating the specific camera, it can assist in pinpointing the geographic area where the image or footage was taken.
+
+
+2. Embedded Metadata and Device Information: Many images uploaded to the internet carry metadata (EXIF data) that could include device details, such as the camera or phone model used to capture the image. This, when combined with Shodan’s ability to scan for connected devices, could potentially be used to track the specific camera or device.
+
+
+3. Network Tracing: If an individual uploads an image using an internet-connected device, Shodan can identify vulnerable network devices, such as routers or Wi-Fi networks in the vicinity. This can provide clues about the location based on the network structure.
+
+
+
+Here are specific commands for using tools like Shodan, ExifTool, and YOLO with OpenCV, which you can utilize in your OSINT tracking process:
+
+1. Shodan
+
+Shodan allows you to search for connected devices, such as cameras or other IoT devices, that are exposed to the internet. You can use the following commands with Shodan’s CLI or API:
+
+Shodan Search (CLI):
+
+```
+shodan search "webcamxp"
+```
+
+This command searches for publicly accessible webcams. You can customize the query to search for other types of connected devices like routers or specific IP cameras.
+
+Searching for IP Cameras:
+
+```
+shodan search "has_screenshot:true product:IPcamera"
+```
+
+This will find internet-connected IP cameras that might have publicly available screenshots.
+
+Shodan Search by Location (IP):
+
+```
+shodan search "net:203.0.113.0/24"
+```
+
+You can search by IP address or subnet to see which devices are exposed from that range.
+
+This is normally how things work with me, I watch the social wait for a photo, Shodan the device. Use the IP to find a location.
+Some more modern technology does imprint metadata but it is encrypted and that takes time. Hunting, time is what you don't have as they always have a head start.
+
+Device-Specific Search:
+
+```
+shodan search "location:'Glasgow, Sauchiehall St, G2 xxx' device:'camera'"
+```
+
+You can specify a geographic location and device type (like cameras) to find relevant devices in that area.
+The postcode for Sauchiehall Street in Glasgow falls within several ranges, but a common one is G2 3AD. Other nearby postcodes include G2 3AH, G2 3AT, and G2 3DD, all of which are located within the city center, in the G2 district.
+
+You can then from a text doc feed in the characters for xxx and have them change command by command.
+Voila you have visual lateral movement up and down a public st and all its web facing devices. This is you can predict the direction of movement. However you can jump if they are moving fast and you know the area of location they are heading.
+
+
+
+
+2. ExifTool (Metadata Extraction)
+
+ExifTool extracts metadata (like GPS location, timestamps, and device info) from image or video files. It can be extremely useful when identifying hidden data within uploaded files.
+
+Extract Metadata from an Image:
+
+```
+exiftool example.jpg
+```
+
+This extracts all metadata from an image.
+
+Extract Only GPS Data:
+
+```
+exiftool -gpslatitude -gpslongitude example.jpg
+```
+
+This command specifically extracts GPS coordinates from an image, if available.
+
+Extract Metadata from Multiple Files:
+
+```
+exiftool -r -ext jpg /path/to/images/
+```
+
+This recursively extracts metadata from all .jpg files in a directory. It can give you the full journey. A person takes. That's why "let me take a selfie" can be the safest and most dangerous thing a person can do.
+
+Again those coordinates can be given from the data you can force with Shodan on a device.
+So I use someones camera to see something but don't know where that is. I can use this on the images and video generated by Shodan and gain a loc stat on the enemy.
+
+3. YOLO with OpenCV (Object Detection)
+
+YOLO can be used with OpenCV for real-time person detection in video feeds or stored footage. This can be useful for detecting individuals based on movement and appearance.
+
+Setting Up YOLO with OpenCV:
+
+1. Download YOLO weights and config:
+
+
+```
+wget https://pjreddie.com/media/files/yolov3.weights
+wget https://github.com/pjreddie/darknet/blob/master/cfg/yolov3.cfg
+```
+
+2. Python Code for Person Detection:
+
+
+```
+import cv2
+import numpy as np
+
+# Load YOLO
+net = cv2.dnn.readNet("yolov3.weights", "yolov3.cfg")
+layer_names = net.getLayerNames()
+output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+
+# Load video or image
+video_capture = cv2.VideoCapture("video.mp4")  # Or use a URL for a live feed
+
+while True:
+    ret, frame = video_capture.read()
+    height, width, channels = frame.shape
+    
+    # Prepare image for YOLO
+    blob = cv2.dnn.blobFromImage(frame, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
+    net.setInput(blob)
+    outputs = net.forward(output_layers)
+    
+    # Analyze outputs
+    for output in outputs:
+        for detection in output:
+            scores = detection[5:]
+            class_id = np.argmax(scores)
+            confidence = scores[class_id]
+            
+            if confidence > 0.5 and class_id == 0:  # '0' is the ID for 'person'
+                # Detection processing
+                center_x = int(detection[0] * width)
+                center_y = int(detection[1] * height)
+                w = int(detection[2] * width)
+                h = int(detection[3] * height)
+                
+                # Drawing bounding box
+                x = int(center_x - w / 2)
+                y = int(center_y - h / 2)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    
+    cv2.imshow("YOLO Detection", frame)
+    
+    # Exit on 'q'
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+video_capture.release()
+cv2.destroyAllWindows()
+```
+
+This code detects people in a video feed or live stream, marking their position with bounding boxes.
+
+4. Google Dorking (Metadata on Public Web Pages)
+
+You can use Google Dorking to find specific file types containing metadata that could help with tracking.
+
+
+Search for Exposed Images with Metadata:
+
+```
+intitle:"index of" inurl:"/images" ext:jpg OR ext:png
+```
+
+This Google Dork query helps find open directories containing images that may have useful metadata for analysis.
+
+By combining these tools, you can demonstrate how OSINT operations can extract and correlate data from a variety of open sources, even when traditional landmarks are missing.
+
+All of this can be processed in seconds not minutes combined with AI and automation.
+Use kibana, ansible, kubernautes anything that makes anything talk and provide collaborative data. 
+
+Now tell me how simple it would really be.
+
+Oh and the last bit using nethunter terminal on a smartphone login into your platform.
+
 
