@@ -1,8 +1,10 @@
-# G.E-P.O.C.S.O.C
+# Gods Eye Proof of
+# Concept, Global Security operations # center.
 
 Myth-buster
-Incomplete but all the pieces are here.
-It will be fully finished on Nov 5th.
+complete, all the pieces are here.
+It will be fully finished.
+notice there is more than one way to build this.
 
 1. Setup and Automation Script (Install Dependencies)
 
