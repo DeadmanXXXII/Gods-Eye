@@ -1,5 +1,4 @@
-# Gods Eye Proof of
-# Concept, Global Security operations # center.
+# Gods Eye Proof of Concept, Global Security operations center.
 
 Myth-buster
 complete, all the pieces are here.
