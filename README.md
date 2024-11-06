@@ -1,4 +1,5 @@
 # Gods Eye Proof of Concept, Global Security operations center.
+Please note due a to certain vulnerabilities found in Bind9 recently this configuration will be changed shortly.
 
 Myth-buster
 complete, all the pieces are here.
