@@ -1,0 +1,17 @@
+# collect_data.yml
+- name: Collect data from nodes
+  hosts: all
+  tasks:
+    - name: Run a tool and collect data
+      shell: "/usr/bin/nmap -sP 192.168.1.0/24"
+      register: scan_results
+
+    - name: Send scan data to message queue (RabbitMQ)
+      uri:
+        url: "http://rabbitmq-service:15672/api/exchanges/%2F/amq.default/publish"
+        method: POST
+        body: "{{ scan_results.stdout }}"
+        user: "user"
+        password: "password"
+        headers:
+          Content-Type: "application/json"
