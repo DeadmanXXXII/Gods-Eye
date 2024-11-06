@@ -1,0 +1,4 @@
+yourdomain.com:53 {
+    file /etc/coredns/yourdomain.com.zone
+    log
+}
