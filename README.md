@@ -1,5 +1,6 @@
 # Gods Eye Proof of Concept, Global Security operations center.
 Please note due a to certain vulnerabilities found in Bind9 recently this configuration will be changed. It now consists of a CoreDNS configuration for the dynamic IP addressing.
+As you could you see at the show I'm all about cyber safe stalking kit. 🤣🤣
 
 Myth-buster
 complete, all the pieces are here.
